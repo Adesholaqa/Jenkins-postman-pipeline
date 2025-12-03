@@ -10,7 +10,7 @@ This project demonstrates how to automate Postman API tests using Jenkins pipeli
 - Postman Collection JSON (`New-Rest-Broker.postman_collection.json`).
 - Postman Environment JSON (`RestfulBooker.postman_environment.json`).
 - Generated Newman HTML report (`newman/newman-report.html`).
-- Screenshots folder (optional) — add pipeline screenshots here for documentation.
+- Screenshots folder 
 - `README.md` (this file).
 
 ---
