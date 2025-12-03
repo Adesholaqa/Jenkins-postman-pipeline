@@ -1,0 +1,680 @@
+{
+	"info": {
+		"_postman_id": "562ec2b2-4ace-4f41-9c17-0ad23fd2e1ae",
+		"name": "Rest-Booker Documentation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49268036",
+		"_collection_link": "https://adesholamighty-5293037.postman.co/workspace/92aa43f2-3d6b-47d4-8ca9-f359ba66e52c/collection/49268036-562ec2b2-4ace-4f41-9c17-0ad23fd2e1ae?action=share&source=collection_link&creator=49268036"
+	},
+	"item": [
+		{
+			"name": "Health Check",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// let jsonData = pm.response.json();\r",
+							"\r",
+							"// pm.test(\"response code is 201 created\",function(){\r",
+							"//     pm.response.to.have.status();\r",
+							"\r",
+							"// })\r",
+							"\r",
+							"// //pm.test('message should be \"created\"',function(){\r",
+							"//     //pm.expect(message)\r",
+							"// //})\r",
+							"// pm.test(\"Status code is 200\", function () {\r",
+							"//     pm.response.to.have.status(200);\r",
+							"// });"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/ping",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"ping"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Authentication and authorization",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();\r",
+							"\r",
+							"pm.environment.set(\"authToken\", jsonData.token);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"admin\",\r\n    \"password\" : \"password123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/auth",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Booking",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();\r",
+							"let count = jsonData.length\r",
+							"\r",
+							"\r",
+							"pm.environment.set(\"id\", jsonData[0].bookingid);\r",
+							"\r",
+							"pm.test('check if the bookingid is greater than 1000', function(){\r",
+							"    pm.expect(count).to.be.above(0)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"check if response time is less than 20000mms\", function(){\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(20000)\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseUrl}}/booking",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve Booking By ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();\r",
+							"let firstName = jsonData.firstname\r",
+							"let totalprice =jsonData.totalprice\r",
+							"let lastname = jsonData.lastname\r",
+							"let additionalneeds =jsonData.additionalneeds\r",
+							"\r",
+							"pm.test('firstname should match the return value' , function(){\r",
+							"    pm.expect(jsonData.firstname).to.eql(firstName)\r",
+							"})\r",
+							"\r",
+							"pm.test('the last name should match the return value', function(){\r",
+							"    pm.expect(jsonData.lastname).to.eql(lastname)\r",
+							"})\r",
+							"pm.test('the depositpaid should be true', function(){\r",
+							"    pm.expect(jsonData.depositpaid).to.eql(true)\r",
+							"})\r",
+							"\r",
+							"pm.test('the check-in date should match the return value', function(){\r",
+							"    pm.expect(jsonData.bookingdates.checkin).to.eql(\"2018-01-01\")\r",
+							"})\r",
+							"\r",
+							"pm.test('the check-out date should match the return value', function(){\r",
+							"    pm.expect(jsonData.bookingdates.checkout).to.eql(\"2019-01-01\")\r",
+							"})\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"the total price should be equal to the retun value\", function(){\r",
+							"    pm.expect(jsonData.totalprice).to.eql(totalprice)\r",
+							"})\r",
+							"\r",
+							"pm.test('check the additional needs to be match with the return value', function(){\r",
+							"    pm.expect(jsonData.additionalneeds).to.eql(additionalneeds)\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/booking/{{id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"booking",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create a Booking",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();\r",
+							"let bookingId = jsonData.bookingid\r",
+							"let totalprice = jsonData.totalprice\r",
+							"let additionalneeds = jsonData.additionalneeds\r",
+							"\r",
+							"pm.test(\"status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"booking Id should matched the bookingid\", function(){\r",
+							"    pm.expect(jsonData.bookingid).to.eql(bookingId)\r",
+							"})\r",
+							"pm.test(\"firstname should be philips\", function(){\r",
+							"    pm.expect(jsonData.booking.firstname).to.eql(\"philips\")\r",
+							"})\r",
+							"\r",
+							"pm.test('the lastname should be Brown', function(){\r",
+							"    pm.expect(jsonData.booking.lastname).to.eql(\"Brown\")\r",
+							"})\r",
+							"pm.test('the depositpaid should be true', function(){\r",
+							"    pm.expect(jsonData.booking.depositpaid).to.eql(true)\r",
+							"})\r",
+							"\r",
+							"pm.test('the checkin  should match the return value', function(){\r",
+							"    pm.expect(jsonData.booking.bookingdates.checkin).to.eql(\"2018-01-01\")\r",
+							"})\r",
+							"\r",
+							"pm.test('the checkout should match the return value', function(){\r",
+							"    pm.expect(jsonData.booking.bookingdates.checkout).to.eql(\"2019-01-01\")\r",
+							"})\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"the total price should be equal to the retun value\", function(){\r",
+							"    pm.expect(jsonData.totalprice).to.eql(totalprice)\r",
+							"})\r",
+							"\r",
+							"pm.test('check the additional needs to be match with the return value', function(){\r",
+							"    pm.expect(jsonData.additionalneeds).to.eql(additionalneeds)\r",
+							"})\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"firstname\" : \"philips\",\r\n    \"lastname\" : \"Brown\",\r\n    \"totalprice\" : 200,\r\n    \"depositpaid\" : true,\r\n    \"bookingdates\" : {\r\n        \"checkin\" : \"2018-01-01\",\r\n        \"checkout\" : \"2019-01-01\"\r\n    },\r\n    \"additionalneeds\" : \"Breakfast\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/booking",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Booking",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test('status code is 200',function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"first name should be mrpotato\", function(){\r",
+							"    pm.expect(jsonData.firstname).to.eql('mrpotato')\r",
+							"})\r",
+							"pm.test('the lastname is smith', function(){\r",
+							"    pm.expect(jsonData.lastname).to.eql(\"smith\")\r",
+							"})\r",
+							"\r",
+							"pm.test('check the total price equal to the update value', function(){\r",
+							"    pm.expect(jsonData.totalprice).to.eql(250)\r",
+							"})\r",
+							"\r",
+							"pm.test('check the depositpaid is true', function(){\r",
+							"    pm.expect(jsonData.depositpaid).to.eql(true)\r",
+							"})\r",
+							"\r",
+							"pm.test('the check-in date should match the return value', function(){\r",
+							"    pm.expect(jsonData.bookingdates.checkin).to.eql(\"2018-01-01\")\r",
+							"})\r",
+							"\r",
+							"pm.test('the check-out date should match the return value', function(){\r",
+							"    pm.expect(jsonData.bookingdates.checkout).to.eql(\"2019-01-01\")\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "token={{authToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstname\" : \"mrpotato\",\r\n    \"lastname\" : \"smith\",\r\n    \"totalprice\" : 250,\r\n    \"depositpaid\" : true,\r\n    \"bookingdates\" : {\r\n        \"checkin\" : \"2018-01-01\",\r\n        \"checkout\" : \"2019-01-01\"\r\n    },\r\n    \"additionalneeds\" : \"Breakfast\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/booking/{{id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"booking",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Booking ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let sameId = pm.environment.get(\"id\");\r",
+							"\r",
+							"let jsonData = pm.response.json();\r",
+							"\r",
+							"let firstname = jsonData.firstname\r",
+							"\r",
+							"let lastname = jsonData.lastname\r",
+							"\r",
+							"let totalprice =jsonData.totalprice\r",
+							"\r",
+							"pm.test(\"status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"first name should be mrpotato\", function(){\r",
+							"    pm.expect(jsonData.firstname).to.eql(firstname)\r",
+							"})\r",
+							"pm.test('the lastname is smith', function(){\r",
+							"    pm.expect(jsonData.lastname).to.eql(lastname)\r",
+							"})\r",
+							"\r",
+							"pm.test('check the total price equal to the update value', function(){\r",
+							"    pm.expect(jsonData.totalprice).to.eql(totalprice)\r",
+							"})\r",
+							"\r",
+							"pm.test('check the depositpaid is true', function(){\r",
+							"    pm.expect(jsonData.depositpaid).to.eql(true)\r",
+							"})\r",
+							"\r",
+							"pm.test('the check-in date should match the return value', function(){\r",
+							"    pm.expect(jsonData.bookingdates.checkin).to.eql(\"2018-01-01\")\r",
+							"})\r",
+							"\r",
+							"pm.test('the check-out date should match the return value', function(){\r",
+							"    pm.expect(jsonData.bookingdates.checkout).to.eql(\"2019-01-01\")\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/booking/{{id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"booking",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Partial Update",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test('the status code is 200', function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test('firstname to be updated to new return value', function(){\r",
+							"    pm.expect(jsonData.firstname).to.eql(\"depo\")\r",
+							"})\r",
+							"\r",
+							"pm.test('last name is updated to return value', function(){\r",
+							"    pm.expect(jsonData.lastname).to.eql(\"james\")\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "token={{authToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstname\" : \"depo\",\r\n    \"lastname\" : \"james\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/booking/{{id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"booking",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deleting Booking",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "token={{authToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/booking/{{id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"booking",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "authToken",
+			"value": ""
+		},
+		{
+			"key": "id",
+			"value": ""
+		}
+	]
+}
